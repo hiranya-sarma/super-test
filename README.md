@@ -184,4 +184,51 @@ pipeline {
     }     
    }
 ```
-
+### Inside jenkins EC2 below commands need to run
+```
+[ec2-user@ip-172-31-42-80 ~]$ history
+    1  vi jenkinsscript.sh
+    2  sh jenkinsscript.sh 
+    3  #!/bin/bash
+    4  sudo yum install -y yum-utils shadow-utils
+    5  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    6  sudo yum -y install terraform
+    7  terraform version
+    8  sudo yum install git -y
+    9  git version
+   10  sudo yum install docker -y
+   11  sudo systemctl enable docker.service
+   12  sudo systemctl start docker.service
+   13  docker ps
+   14  sudo chmod 777 /var/run/docker.sock
+   15  docker ps
+   16  sudo yum install ansible -y
+   17  ansible --version
+   18  # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+   19  ARCH=amd64
+   20  PLATFORM=$(uname -s)_$ARCH
+   21  curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+   22  # (Optional) Verify checksum
+   23  curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+   24  tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+   25  sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
+   26  eksctl --version
+   27  eksctl version
+   28  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.3/2025-08-03/bin/linux/amd64/kubectl
+   29  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.3/2025-08-03/bin/linux/amd64/kubectl.sha256
+   30  sha256sum -c kubectl.sha256
+   31  openssl sha1 -sha256 kubectl
+   32  chmod +x ./kubectl
+   33  mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+   34  echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+   35  ls
+   36  sudo mv /usr/local/bin/
+   37  sudo mv kubectl /usr/local/bin/
+   38  kubectl version --client
+   39  aws configure
+   40  vi cluster-trust-policy.json
+   41  aws iam create-role   --role-name eksClusterRole   --assume-role-policy-document file://"cluster-trust-policy.json"
+   42  aws iam attach-role-policy   --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy   --role-name eksClusterRole
+   43  cat ~/.bash_history
+   44  history
+```
